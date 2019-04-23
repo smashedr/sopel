@@ -2,6 +2,7 @@
 """
 calc.py - Sopel Calculator Module
 Copyright 2008, Sean B. Palmer, inamidst.com
+Copyright 2019, dgw, technobabbl.es
 Licensed under the Eiffel Forum License 2.
 
 https://sopel.chat
@@ -12,6 +13,7 @@ import sys
 
 from requests import get
 
+from sopel.config.types import StaticSection, ValidatedAttribute
 from sopel.module import commands, example
 from sopel.tools.calculation import eval_equation
 
@@ -27,7 +29,14 @@ if sys.version_info.major >= 3:
     unichr = chr
 
 
-BASE_TUMBOLIA_URI = 'https://tumbolia-sopel.appspot.com/'
+class CalcSection(StaticSection):
+    oblique_url = ValidatedAttribute('oblique_url',
+        default='https://tumbolia-sopel.appspot.com/')
+    """Full URL of the Oblique service instance to use for Python evaluation"""
+
+
+def setup(bot):
+    bot.config.define_section('calc', CalcSection)
 
 
 @commands('c', 'calc')
@@ -62,7 +71,7 @@ def py(bot, trigger):
         return bot.say("Need an expression to evaluate")
 
     query = trigger.group(2)
-    uri = BASE_TUMBOLIA_URI + 'py/'
+    uri = bot.config.calc.oblique_url + 'py/'
     answer = get(uri + quote(query)).content.decode('utf-8')
     if answer:
         # bot.say can potentially lead to 3rd party commands triggering.
