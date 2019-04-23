@@ -224,10 +224,8 @@ class Config(object):
                         doc = module.__doc__.split('\n', 1)[0]
                         if doc:
                             prompt = doc
-                    prompt = 'Configure {} (y/n)? [n]'.format(prompt)
-                    do_configure = get_input(prompt)
-                    do_configure = do_configure and do_configure.lower() == 'y'
-                    if do_configure:
+                    prompt = 'Configure {}'.format(prompt)
+                    if self.option(prompt, default=False):
                         module.configure(self)
         self.save()
 
