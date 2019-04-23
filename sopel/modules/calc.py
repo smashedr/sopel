@@ -31,7 +31,7 @@ if sys.version_info.major >= 3:
 
 class CalcSection(StaticSection):
     oblique_url = ValidatedAttribute('oblique_url',
-        default='https://tumbolia-sopel.appspot.com/')
+        default='https://oblique.sopel.chat/')
     """Full URL of the Oblique service instance to use
 
     Called for Python evaluation, instead of running unrestricted user input in
@@ -45,7 +45,7 @@ def configure(config):
     """
     | name | example | purpose |
     | ---- | ------- | ------- |
-    | oblique\\_url | https://tumbolia-sopel.appspot.com/ | URL to an [Oblique](https://github.com/sopel-irc/oblique) instance |
+    | oblique\\_url | https://oblique.sopel.chat/ | URL to an [Oblique](https://github.com/sopel-irc/oblique) instance |
     """
     config.define_section('calc', CalcSection)
     config.calc.configure_setting('oblique_url',
