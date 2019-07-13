@@ -550,10 +550,13 @@ class Sopel(irc.Bot):
 
     def kick(self, nick, channel, text=None):
         """Send an IRC KICK command.
+
         Within the context of a triggered callable, ``channel`` will default to the
         channel in which the call was triggered. If triggered from a private message,
         ``channel`` is required (or the call to ``kick()`` will be ignored).
-        The bot must be a channel operator in specified channel for this to work.
+
+        The bot must be a channel operator in the ``channel`` for this to work.
+
         .. versionadded:: 7.0
         """
         self.write(['KICK', channel, nick], text)
