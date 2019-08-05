@@ -75,7 +75,7 @@ class CoreSection(StaticSection):
     """
 
     auth_method = ChoiceAttribute('auth_method', choices=[
-        'nickserv', 'authserv', 'Q', 'sasl', 'server', 'userserv'])
+        'nickserv', 'authserv', 'Q', 'sasl', 'server', 'userserv', 'token'])
     """Simple method to authenticate with the server.
 
     Can be ``nickserv``, ``authserv``, ``Q``, ``sasl``, or ``server`` or
