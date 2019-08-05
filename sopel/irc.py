@@ -20,7 +20,7 @@ import codecs
 import traceback
 from sopel.logger import get_logger
 from sopel.tools import stderr, Identifier
-from sopel.tools.twitch import Auth
+from sopel.tools.auth import TwitchAuth
 from sopel.trigger import PreTrigger
 try:
     import ssl
@@ -294,7 +294,7 @@ class Bot(asynchat.async_chat):
 
         # authenticate account if needed
         if hasattr(self.config, 'twitch'):
-            self.write(('PASS', Auth.get_bot_token(self, oauth=True)))
+            self.write(('PASS', TwitchAuth.get_bot_token(self, oauth=True)))
         elif self.config.core.auth_method == 'server':
             self.write(('PASS', self.config.core.auth_password))
         elif self.config.core.server_auth_method == 'server':

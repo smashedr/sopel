@@ -5,11 +5,9 @@ import requests
 logger = logging.getLogger('sopel')
 
 
-class Auth(object):
+class TwitchAuth(object):
     @classmethod
     def get_bot_token(cls, bot, oauth=False):
-        logger.debug('-- GETTING BOT TOKEN --')
-        #return 'oauth:ylo0h7xpmn7r60zd3srlj5hr4n8k3i'
         token = cls._get_oauth_token(bot, 'bot_token', 'bot_refresh')
         if oauth:
             return 'oauth:{}'.format(token)
@@ -17,8 +15,12 @@ class Auth(object):
             return token
 
     @classmethod
-    def get_owner_token(cls, bot):
-        return cls._get_oauth_token(bot, 'owner_token', 'owner_refresh')
+    def get_owner_token(cls, bot, oauth=False):
+        token = cls._get_oauth_token(bot, 'owner_token', 'owner_refresh')
+        if oauth:
+            return 'oauth:{}'.format(token)
+        else:
+            return token
 
     @classmethod
     def _get_oauth_token(cls, bot, db_key, refresh_key):
