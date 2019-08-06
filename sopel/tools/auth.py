@@ -25,7 +25,7 @@ class TwitchAuth(object):
 
     @classmethod
     def _get_oauth_token(cls, bot, db_key, refresh_key):
-        token = bot.db.get_channel_value(bot.config.twitch.channel, db_key) or {}
+        token = bot.db.get_channel_value(bot.config.twitch.owner_id, db_key) or {}
         if not token:
             logger.info('NO TOKEN FOUND: Initializing default token for: {}'.format(db_key))
             token = {
