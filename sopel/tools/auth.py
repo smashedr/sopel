@@ -1,5 +1,6 @@
 import datetime
 import logging
+import os
 import requests
 
 logger = logging.getLogger('sopel')
@@ -38,7 +39,7 @@ class TwitchAuth(object):
 
         logger.debug('-- access token EXPIRED --')
         refresh = cls.refresh_twitch_token(
-            bot.config.twitch.client_id, bot.config.twitch.client_secret, token['refresh_token']
+            os.environ['TWITCH_CLIENT_ID'], os.environ['TWITCH_CLIENT_SECRET'], token['refresh_token']
         )
         expire_at = datetime.datetime.now() + datetime.timedelta(seconds=refresh['expires_in'])
         token = {
