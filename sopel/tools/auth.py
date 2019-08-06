@@ -24,7 +24,7 @@ class TwitchAuth(object):
 
     @classmethod
     def _get_oauth_token(cls, bot, db_key, refresh_key):
-        token = bot.db.get_channel_value(bot.config.twitch.main_channel, db_key) or {}
+        token = bot.db.get_channel_value(bot.config.twitch.channel, db_key) or {}
         if not token:
             logger.info('NO TOKEN FOUND: Initializing default token for: {}'.format(db_key))
             token = {
@@ -47,7 +47,7 @@ class TwitchAuth(object):
             'iso_expire': expire_at.isoformat(),
         }
         logger.debug(token)
-        bot.db.set_channel_value(bot.config.twitch.main_channel, db_key, token)
+        bot.db.set_channel_value(bot.config.twitch.channel, db_key, token)
         return token['access_token']
 
     @staticmethod
