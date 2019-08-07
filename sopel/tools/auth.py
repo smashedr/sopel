@@ -9,7 +9,7 @@ logger = logging.getLogger('sopel')
 class TwitchAuth(object):
     @classmethod
     def get_bot_token(cls, bot, oauth=False):
-        token = cls._get_oauth_token(bot, 'bot_token', 'bot_refresh')
+        token = cls._get_oauth_token(bot, 'bot_id', 'bot_token', 'bot_refresh')
         if oauth:
             return 'oauth:{}'.format(token)
         else:
@@ -17,17 +17,19 @@ class TwitchAuth(object):
 
     @classmethod
     def get_owner_token(cls, bot, oauth=False):
-        token = cls._get_oauth_token(bot, 'owner_token', 'owner_refresh')
+        token = cls._get_oauth_token(bot, 'owner_id', 'owner_token', 'owner_refresh')
         if oauth:
             return 'oauth:{}'.format(token)
         else:
             return token
 
     @classmethod
-    def _get_oauth_token(cls, bot, db_key, refresh_key):
-        token = bot.db.get_channel_value(bot.config.twitch.owner_id, db_key) or {}
+    def _get_oauth_token(cls, bot, db_name, db_key, refresh_key):
+        logger.debug('-- db_name: %s --', db_name)
+        token = bot.db.get_channel_value(getattr(bot.config.twitch, db_name), db_key) or {}
+        logger.debug(token)
         if not token:
-            logger.info('NO TOKEN FOUND: Initializing default token for: {}'.format(db_key))
+            logger.warning('NO TOKEN FOUND: Initializing default token for: %s', db_key)
             token = {
                 'refresh_token': getattr(bot.config.twitch, refresh_key),
                 'iso_expire': datetime.datetime.now().isoformat(),
@@ -48,7 +50,7 @@ class TwitchAuth(object):
             'iso_expire': expire_at.isoformat(),
         }
         logger.debug(token)
-        bot.db.set_channel_value(bot.config.twitch.channel, db_key, token)
+        bot.db.set_channel_value(getattr(bot.config.twitch, db_name), db_key, token)
         return token['access_token']
 
     @staticmethod
