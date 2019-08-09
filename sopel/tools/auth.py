@@ -29,6 +29,8 @@ class TwitchAuth(object):
         token = bot.db.get_channel_value(getattr(bot.config.twitch, db_name), db_key) or {}
         logger.debug(token)
         if not token:
+            if not getattr(bot.config.twitch, refresh_key):
+                raise Exception('Missing config value twitch:%s' % refresh_key)
             logger.warning('NO TOKEN FOUND: Initializing default token for: %s', db_key)
             token = {
                 'refresh_token': getattr(bot.config.twitch, refresh_key),
